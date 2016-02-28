@@ -12,35 +12,60 @@ class Constantes {
 private:
     static const int BarraLengX=100;
 public:
-    static const int ScreenX=100;
-    static const int ScreenY=100;
+    //datos de pantallla
+    static const int ScreenX=800;
+    static const int ScreenY=600;
+    //bandera para impirmir en pantalla
     static const bool debug=true;
+    //largo del mensaje
+    static const int LengMSG=2;
+    //cantidad de jugadores
+    static const int MaxPlyrs=2;
+    
+    /*-----------jugador-------------*/
+    //dimensiones del cliente
+    static const int PlayrLenght=100;
+    static const int PlayrLengY=20;
+    //posicion inicial del jugador
+    static const int initPosXPLY=25;
+    static const int PosYPLY=90;
+    //constantes para disminuir el tamaño del cliente
     static const int Decrement=-5;
     static const int Increment=5;
+    //constante para mover el cliente
     static const int pixlMovBrr=10;
-    static const int pixlMovBll=10;
-    static const int BrrType1=1;
-    static const int BrrType2=2;
-    static const int BrrType3=3;
-    static const int LengMSG=2;
-    static const int PlayrLenght=100;
+    
+    /*--------------bola-----------------*/
+    //sector de choque contra la paleta del cliente
     static const int BarraLengXSector1=BarraLengX*(1/3);
     static const int BarraLengXSector2=BarraLengX*(2/3);
     static const int BarraLengXSector3=BarraLengX;
-    static const int BarraLengY=20;
+    //dimensiones de la bola
     static const int BallSize=20;
-    static const int TotalBricks=20;
-    static const int DosCincoSeis=256;
-    static const int MaxPlyrs=1;
+    //constante para mover la bola
+    static const int pixlMovBll=10;
+    
+    /*--------------bloques-------------*/
+    //vida de las bloques
+    static const int BrrType1=1;
+    static const int BrrType2=2;
+    static const int BrrType3=3;
+    //cantidad de los bloques en pantalla
+    static const int TotalBricks=64;
+    static const int BrrSize=50;
+    
+    //constantes varias
     static const int cero=0;
     static const int uno=1;
     static const int dos=2;
     static const int tres=3;
+    static const int cuatro=4;
     static const int cinco=5;
     static const int seis=6;
     static const int siete=7;
-    static const int initPosXPLY=25;
-    static const int PosYPLY=90;
+    static const int diez=10;
+    
+    /*-------errores por parte del server------*/
     static const char* error1;
     static const char* error2;
     static const char* error3;

@@ -10,8 +10,10 @@
 controlador::controlador(int Pport) {
     _port=Pport;
     _servidor= new servidor(_port);
-    _pelota[cero]= new Bola(ScreenX/dos,PosYPLY-(BallSize+dos));
-    for(int i =0; i<)
+    _pelota[cero]= new Bola(ScreenX/dos-BallSize,PosYPLY-(BallSize+dos));
+    for(int i =0; i<TotalBricks; i++)
+        for(int j=0; j<TotalBricks;j++)
+            _barras[i]=new BarraDes(j*BrrSize,(i*BrrSize)+diez,BrrType1);
     MainLoop();
 }
 
@@ -22,16 +24,16 @@ controlador::~controlador() {
 }
 
 /**
- * ciclo principa para revizar todo.
+ * ciclo principal para revizar todo.
  */
 void controlador::MainLoop() {
     while(true){
-        while(_servidor->_Tplayrs>cero){
-            _Tplys=_servidor->_Tplayrs;
+        
+        while(_servidor->getTplyrs()>cero){
             for(int i=0; i<MaxPlyrs; i++){
-                if(_servidor->_Boolplyrs[i]){
-                    _ply[i]->move(atoi(_servidor->_plyMSG[i]));
-                    _servidor->_Boolplyrs[i]=false;
+                if(_servidor->getBoolPlyrs(i)){
+                    _ply[i]->move(stoi(_servidor->getMSGPlyrs(i)));
+                    _servidor->setBoolPlyrs(i);
                 }
             }
             checkColl();
@@ -80,37 +82,78 @@ void controlador::checkColl() {
     
     //verificaciones para colicion contra cada uno de los bloques.
     for(int i=0; i<TotalBricks; i++){
-        if(_barras[i]->getPosY()+BarraLengY==_pelota[cero]->getPy()&&
-                _barras[i]->getPosX()<=_pelota[cero]->getPx() &&
-                (_barras[i]->getPosX()+BarraLengXSector3)<=_pelota[cero]->getPx()){
-            y=-1;
-            _barras[i]->impact();
-        }
-        else if(_barras[i]->getPosY()==_pelota[cero]->getPy()+BallSize &&
-                _barras[i]->getPosX()<=_pelota[cero]->getPx() &&
-                (_barras[i]->getPosX()+BarraLengXSector3)<=_pelota[cero]->getPx()){
-            y=-1;
-            _barras[i]->impact();
-        }
-        else if(_barras[i]->getPosX()==_pelota[cero]->getPx()+BallSize &&
-                _barras[i]->getPosY()<=_pelota[cero]->getPy()+BallSize &&
-                (_barras[i]->getPosY()+BarraLengY)<=_pelota[cero]->getPy()
-                +BallSize){
-            x=-1;
-            _barras[i]->impact();
-        }
-        else if(_barras[i]->getPosX()+BarraLengXSector3==_pelota[cero]->getPx() &&
-                _barras[i]->getPosY()<=_pelota[cero]->getPy() &&
-                (_barras[i]->getPosY()+BarraLengY)<=_pelota[cero]->getPy()){
-            x=-1;
-            _barras[i]->impact();
-        }
-        //verificacion para eliminar la barra que ya no le quedan vidas.
-        if(_barras[i]->getHitLft()==cero)
-            destroyObj(i);
+        checkCollBrr(i, &x, &y);
     }
     //movemos la pelota segun con los datos que hayamos cambiado.
     _pelota[cero]->move(x,y);
+}
+
+/**
+ * metodo para verificar coliciones contra barras
+ * @param bar dato entero que es el espacio de la barra con la cual 
+ * estamos revizando actualmente.
+ * @param x dato tipo puntero entero que es el X de la bola que va 
+ * a cambiar segun se reporte un choque contra este.
+ * @param y dato tipo puntero entero que es el Y de la bola que va 
+ * a cambiar segun se reporte un choque contra este.
+ */
+void controlador::checkCollBrr(int bar, int * x, int * y) {
+    if(_barras[bar]->getPosY()+BrrSize==_pelota[cero]->getPy()&&
+            _barras[bar]->getPosX()<=_pelota[cero]->getPx() &&
+            (_barras[bar]->getPosX()+BrrSize)<=_pelota[cero]->getPx()){
+        (*y)=-1;
+        _barras[bar]->impact();
+    }
+    else if(_barras[bar]->getPosY()==_pelota[cero]->getPy()+BallSize &&
+            _barras[bar]->getPosX()<=_pelota[cero]->getPx() &&
+            (_barras[bar]->getPosX()+BrrSize)<=_pelota[cero]->getPx()){
+        (*y)=-1;
+        _barras[bar]->impact();
+    }
+    else if(_barras[bar]->getPosX()==_pelota[cero]->getPx()+BallSize &&
+            _barras[bar]->getPosY()<=_pelota[cero]->getPy()+BallSize &&
+            (_barras[bar]->getPosY()+BrrSize)<=_pelota[cero]->getPy()
+            +BallSize){
+        (*x)=-1;
+        _barras[bar]->impact();
+    }
+    else if(_barras[bar]->getPosX()+BrrSize==_pelota[cero]->getPx() &&
+            _barras[bar]->getPosY()<=_pelota[cero]->getPy() &&
+            (_barras[bar]->getPosY()+BrrSize)<=_pelota[cero]->getPy()){
+        (*x)=-1;
+        _barras[bar]->impact();
+    }
+    //verificacion para eliminar la barra que ya no le quedan vidas.
+    if(_barras[bar]->getHitLft()==cero)
+        destroyObj(bar);
+}
+
+/**
+ * metodo para revizar una colicion contra un jugador
+ * @param plyr dato tipo entero que es el numero de cliente contra el 
+ * cual estamos revizando.
+ * @param x dato tipo puntero entero que es el X de la bola que va 
+ * a cambiar segun se reporte un choque contra este.
+ * @param y dato tipo puntero entero que es el Y de la bola que va 
+ * a cambiar segun se reporte un choque contra este.
+ */
+void controlador::checkCollPly(int plyr, int * x, int * y) {
+    if(_pelota[cero]->getPy()+BallSize==PosYPLY &&
+            _ply[plyr]->getPosX()<=_pelota[cero]->getPx()&&
+            (_ply[plyr]->getPosX()+PlayrLenght)>=_pelota[cero]->getPx())
+        (*y)=-1;
+    if(_pelota[cero]->getPy()+BallSize==PosYPLY && 
+            _pelota[cero]->getPx()>=_ply[plyr]->getPosX() &&
+            _pelota[cero]->getPx()<=(_ply[plyr]->getPosX()+BarraLengXSector1))
+        (*x)=-1;
+    else if(_pelota[cero]->getPy()+BallSize==PosYPLY && 
+            _pelota[cero]->getPx()>=(_ply[plyr]->getPosX()+BarraLengXSector1) &&
+            _pelota[cero]->getPx()<=(_ply[plyr]->getPosX()+BarraLengXSector2))
+        (*x)=0;
+    else if(_pelota[cero]->getPy()+BallSize==PosYPLY && 
+            _pelota[cero]->getPx()>=(_ply[plyr]->getPosX()+BarraLengXSector2) &&
+            _pelota[cero]->getPx()<=(_ply[plyr]->getPosX()+BarraLengXSector3))
+        (*x)=1;
 }
 
 /**

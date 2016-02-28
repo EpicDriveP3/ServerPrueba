@@ -21,19 +21,19 @@
 
 using namespace std;
 class servidor: public Constantes {
-friend class controlador;
+    
 public:
     servidor(int port);
     virtual ~servidor();
-    bool sendMSG(const char* msg, int lenght);
+    void sendMSG(const char* msg, int lenght);
     bool getBoolPlyrs(int plyr);
+    void setBoolPlyrs(int plyr);
     string getMSGPlyrs(int plyr);
     int getTplyrs();
     void gettDatas(int plyr, int newsockfd);
 private:
     int _sockfd, _newsockfd, _portno, _n, _codigos;
     socklen_t _clilen;
-    char _buffer[DosCincoSeis];
     char* _id;
     bool _Boolplyrs[MaxPlyrs];
     char* _plyMSG[MaxPlyrs];

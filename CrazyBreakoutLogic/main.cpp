@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
     //cout<<dato.length()<<endl;
     
     //forma 1
+    /*
     Bola * pelota[3];
     pelota[0]= new Bola(1, 2);
     pelota[1]= new Bola(1, 2);
@@ -34,9 +35,9 @@ int main(int argc, char** argv) {
     cout<<pelota[0]->getPx()<<endl;
     temp->move(1,1);
     cout<<temp->getPx()<<endl;
-    
+    */
     //forma 2 
-    
+    /*
     Bola * pelota[3];
     pelota[0]= new Bola(1, 2);
     pelota[1]= new Bola(1, 2);
@@ -48,7 +49,7 @@ int main(int argc, char** argv) {
     cout<<pelota[0]->getPx()<<endl;
     pelota[0]->move(1,1);
     cout<<pelota[0]->getPx()<<endl;
-    
+    */
     return 0;
 }
 

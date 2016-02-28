@@ -54,11 +54,23 @@ servidor::servidor(int port) {
 servidor::~servidor() {
 }
 
+/**
+ * metodo para botar todo el programa si existe algun fallo y 
+ * evitar errores futuros.
+ * @param msg dato char* que es el mensaje que corresponde a error 
+ * probocado.
+ */
 void servidor::error(const char* msg) {
     perror(msg);
     exit(uno);
 }
 
+/**
+ * ciclo por cliente que escucha los datos recibidos por el cliente.
+ * @param pPlyr dato tipo entero que es el numero del cliente.
+ * @param newsockfd dato entero que es el socket del cliente con el que
+ * nos comunicamos.
+ */
 void servidor::gettDatas(int pPlyr, int newsockfd) {
     void* almacenador= malloc(sizeof(LengMSG));
     while(true){
@@ -73,22 +85,52 @@ void servidor::gettDatas(int pPlyr, int newsockfd) {
     }
 }
 
-bool servidor::sendMSG(const char* msg, int lenght) {
-    _n=write(_ToScreen, msg, lenght);
+/**
+ * metodo para enviar los mensajes a la pantalla y alertar los cambios
+ * @param msg dato tipo char* const, que es el mensaje que enviaremos.
+ * @param lenght dato tipo entero, este es el largo del mensaje.
+ */
+void servidor::sendMSG(const char* msg, int lenght) {
+    _n=write(_ToScreen, msg, LengMSG);
     if (_n < cero) 
         error(error5);
     if(debug)
         cout<<"mensaje enviado"<<endl;
 }
 
+/**
+ * metodo para hacer el observer y darse cuenta si ya hay
+ * un mensaje de parte del cliente.
+ * @param plyr recibe un entero que es el numero del cliente.
+ * @return retorna un dato tipo bool.
+ */
 bool servidor::getBoolPlyrs(int plyr) {
     return _Boolplyrs[plyr];
 }
 
+/**
+ * metodo para establecer en falso el mensaje que recibimos del cliente 
+ * y hacer que se pueda recibir un nuevo mensaje.
+ * @param plyr dato tipo entero, este es el numero del jugador.
+ */
+void servidor::setBoolPlyrs(int plyr) {
+    _Boolplyrs[plyr]=false;
+}
+
+/**
+ * metodo para obtener el mensaje que envia el cliente.
+ * @param plyr recibe un dato tipo entero que es el numero de cliente
+ * @return retorna un dato tipo string que es el mensaje del cliente
+ */
 string servidor::getMSGPlyrs(int plyr) {
     return _plyMSG[plyr];
 }
 
+/**
+ * metodo para conocer la cantidad total de jugadores conectados
+ * actualmente.
+ * @return dato entero.
+ */
 int servidor::getTplyrs() {
     return _Tplayrs;
 }

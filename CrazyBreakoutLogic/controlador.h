@@ -14,9 +14,13 @@
 #include "servidor.h"
 #include "JsonCreator.h"
 #include <string>
+#include <string.h>
 #include <stdio.h>
 #include <cstdlib>
 #include <strings.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 using namespace std;
 /**
@@ -49,16 +53,12 @@ private:
      * _BarrsLeft-> dato que contiene la cantidad de barras restante en campo.
      */
     int _Tplys, _BallsLeft,_BarrsLeft;
-    //ciclo principal para verificar todo lo que esta trabajando.
     void MainLoop();
-    //metodo para destruir un objeto.
     void destroyObj(int BarNum);
-    //metodo para redimencionar la barra cuando se salga del campo.
     void resizeBar(int pTypeOP);
-    //metodo para revizar coliciones contra los objetos del campo.
     void checkColl();
-    //metodo para revizar la coneccion contra los jugadores.
-    bool checkContt();
+    void checkCollBrr(int bar, int *x, int*y);
+    void checkCollPly(int plyr, int *x, int*y);
 };
 
 #endif	/* CONTROLER_H */
