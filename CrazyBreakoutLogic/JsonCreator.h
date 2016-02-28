@@ -15,6 +15,10 @@
 
 using namespace std;
 
+/**
+ * clase usada para crear el Json que se usara crear el mensaje que se enviara
+ * al cliente que tenga pantalla.
+ */
 class JsonCreator: public Constantes {
 public:
     JsonCreator();

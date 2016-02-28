@@ -34,6 +34,10 @@ servidor::servidor(int port) {
             error(error3);
         if(_Tplayrs==cero)
             _ToScreen=_newsockfd;
+        
+        //aqui vamos a poner el ciclo que va a abrir los hilos para 
+        //los clientes
+        /*--------------*/
         int pid= fork();
         if(pid<cero)
             error(error4);
@@ -74,7 +78,8 @@ void servidor::error(const char* msg) {
 void servidor::gettDatas(int pPlyr, int newsockfd) {
     void* almacenador= malloc(sizeof(LengMSG));
     while(true){
-        while(!_Boolplyrs[pPlyr]){
+        while(!getBoolPlyrs(pPlyr)){
+            
             bzero(almacenador, sizeof(LengMSG));
             _n = read(newsockfd,almacenador,sizeof(LengMSG));
             if (_n < cero)
@@ -84,6 +89,7 @@ void servidor::gettDatas(int pPlyr, int newsockfd) {
         }
     }
 }
+
 
 /**
  * metodo para enviar los mensajes a la pantalla y alertar los cambios
