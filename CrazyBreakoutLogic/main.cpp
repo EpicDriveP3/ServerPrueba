@@ -9,9 +9,21 @@
 #include <iostream>
 #include <string>
 #include "Bola.h"
+#include "structs.h"
+#include <pthread.h>
 
 using namespace std;
 
+pthread_mutex_t lock;
+
+void* metodoPrueba(void* datos){
+    ThreadData data=*((ThreadData*)datos);
+    pthread_mutex_lock(&lock);
+    cout<<data._Tplyr<<endl;
+    cout<<data._Tsockfd<<endl;
+    pthread_mutex_unlock(&lock);
+    return NULL;
+}
 /*
  * 
  */
@@ -50,6 +62,11 @@ int main(int argc, char** argv) {
     pelota[0]->move(1,1);
     cout<<pelota[0]->getPx()<<endl;
     */
+    
+    ThreadData datos;
+    datos._Tplyr=1234;
+    datos._Tsockfd=5678;
+    metodoPrueba(&datos);
     return 0;
 }
 

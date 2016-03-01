@@ -34,10 +34,6 @@ servidor::servidor(int port) {
             error(error3);
         if(_Tplayrs==cero)
             _ToScreen=_newsockfd;
-        
-        //aqui vamos a poner el ciclo que va a abrir los hilos para 
-        //los clientes
-        /*--------------*/
         int pid= fork();
         if(pid<cero)
             error(error4);
@@ -70,7 +66,8 @@ void servidor::error(const char* msg) {
 }
 
 /**
- * ciclo por cliente que escucha los datos recibidos por el cliente.
+ * ciclo por cliente que escucha los datos recibidos por el cliente, ya tiene
+ * el mutex.
  * @param pPlyr dato tipo entero que es el numero del cliente.
  * @param newsockfd dato entero que es el socket del cliente con el que
  * nos comunicamos.
@@ -79,13 +76,14 @@ void servidor::gettDatas(int pPlyr, int newsockfd) {
     void* almacenador= malloc(sizeof(LengMSG));
     while(true){
         while(!getBoolPlyrs(pPlyr)){
-            
             bzero(almacenador, sizeof(LengMSG));
             _n = read(newsockfd,almacenador,sizeof(LengMSG));
             if (_n < cero)
                 error(error6);
+            pthread_mutex_lock(&_lock);
             _Boolplyrs[pPlyr]=true;
             _plyMSG[pPlyr]=(char*)almacenador;
+            pthread_mutex_unlock(&_lock);
         }
     }
 }
@@ -106,30 +104,38 @@ void servidor::sendMSG(const char* msg, int lenght) {
 
 /**
  * metodo para hacer el observer y darse cuenta si ya hay
- * un mensaje de parte del cliente.
+ * un mensaje de parte del cliente, ya tiene el mutex.
  * @param plyr recibe un entero que es el numero del cliente.
  * @return retorna un dato tipo bool.
  */
 bool servidor::getBoolPlyrs(int plyr) {
-    return _Boolplyrs[plyr];
+    pthread_mutex_lock(&_lock);
+    bool dato= _Boolplyrs[plyr];
+    pthread_mutex_unlock(&_lock);
+    return dato;
 }
 
 /**
  * metodo para establecer en falso el mensaje que recibimos del cliente 
- * y hacer que se pueda recibir un nuevo mensaje.
+ * y hacer que se pueda recibir un nuevo mensaje, ya tiene el mutex.
  * @param plyr dato tipo entero, este es el numero del jugador.
  */
 void servidor::setBoolPlyrs(int plyr) {
+    pthread_mutex_lock(&_lock);
     _Boolplyrs[plyr]=false;
+    pthread_mutex_unlock(&_lock);
 }
 
 /**
- * metodo para obtener el mensaje que envia el cliente.
+ * metodo para obtener el mensaje que envia el cliente, ya tiene el mutex.
  * @param plyr recibe un dato tipo entero que es el numero de cliente
  * @return retorna un dato tipo string que es el mensaje del cliente
  */
 string servidor::getMSGPlyrs(int plyr) {
-    return _plyMSG[plyr];
+    pthread_mutex_lock(&_lock);
+    string dato= _plyMSG[plyr];
+    pthread_mutex_lock(&_lock);
+    return dato;
 }
 
 /**

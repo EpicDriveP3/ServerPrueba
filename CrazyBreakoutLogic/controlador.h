@@ -18,9 +18,6 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <strings.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <stdlib.h>
 
 using namespace std;
 /**
@@ -59,6 +56,8 @@ private:
     void checkColl();
     void checkCollBrr(int bar, int *x, int*y);
     void checkCollPly(int plyr, int *x, int*y);
+    bool getBoolMutex(int plyr);
+    string getMsgMutex(int plyr);
 };
 
 #endif	/* CONTROLER_H */

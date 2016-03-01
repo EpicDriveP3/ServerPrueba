@@ -28,7 +28,6 @@ controlador::~controlador() {
  */
 void controlador::MainLoop() {
     while(true){
-        
         while(_servidor->getTplyrs()>cero){
             for(int i=0; i<MaxPlyrs; i++){
                 if(_servidor->getBoolPlyrs(i)){

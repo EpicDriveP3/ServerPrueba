@@ -39,11 +39,8 @@ public:
     int getTplyrs();
     void gettDatas(int plyr, int newsockfd);
 private:
-    //hilos
-    pthread_t _hilos[MaxPlyrs];
     //bloqueo mutex
     pthread_mutex_t _lock;
-    
     int counter;
     //datos propios de la instanciacion del servidor
     int _sockfd, _newsockfd, _portno, _n, _codigos;

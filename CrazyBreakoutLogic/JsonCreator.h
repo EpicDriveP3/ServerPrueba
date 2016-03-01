@@ -18,7 +18,13 @@ using namespace std;
 /**
  * clase usada para crear el Json que se usara crear el mensaje que se enviara
  * al cliente que tenga pantalla.
+ * long last=0, actual=0;
+ * actual= timer.getTime();
+ * if(abs(last-acual)<100)
+ *  move();
+ * last= actual;
  */
+
 class JsonCreator: public Constantes {
 public:
     JsonCreator();
