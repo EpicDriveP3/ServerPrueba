@@ -49,7 +49,7 @@ private:
      * _BallsLeft-> dato que contiene la cantidad de pelotas en campo
      * _BarrsLeft-> dato que contiene la cantidad de barras restante en campo.
      */
-    int _Tplys, _BallsLeft,_BarrsLeft;
+    int _Tplys, _BallsLeft,_BarrsHit;
     void MainLoop();
     void destroyObj(int BarNum);
     void resizeBar(int pTypeOP);

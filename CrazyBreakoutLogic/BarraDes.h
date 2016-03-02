@@ -9,6 +9,9 @@
 #define	BARRADES_H
 #include "Constantes.h"
 
+/**
+ * clase que crea Bloques para destuir en pantalla.
+ */
 class BarraDes:public Constantes {
 public:
     BarraDes(int pX, int pY, int pType);
@@ -18,10 +21,13 @@ public:
     int getPosX();
     int getPosY();
     void impact();
+    void setFlag(bool flag);
+    bool getFlag();
 private:
     int _Posx, _Posy;
     int _hitsLft;
     int _type;
+    bool _flag;
 };
 
 #endif	/* BARRADES_H */

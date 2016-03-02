@@ -29,7 +29,7 @@ class JsonCreator: public Constantes {
 public:
     JsonCreator();
     virtual ~JsonCreator();    
-    string create(Bola* bola[], BarraPLY* plyrs[], BarraDes* Barrs[],int pBolas,
+    string create(Bola* bola[], BarraPLY* plyrs[], BarraDes* Barrs,int pBolas,
     int pPlyrs, int pBarrs);
 private:
     string _mensaje;

@@ -46,12 +46,10 @@ public:
     static const int pixlMovBll=10;
     
     /*--------------bloques-------------*/
-    //vida de las bloques
-    static const int BrrType1=1;
-    static const int BrrType2=2;
-    static const int BrrType3=3;
     //cantidad de los bloques en pantalla
     static const int TotalBricks=64;
+    static const int ColBrick=4;
+    static const int RowBrick=16;
     static const int BrrSize=50;
     
     //constantes varias
@@ -64,6 +62,7 @@ public:
     static const int seis=6;
     static const int siete=7;
     static const int diez=10;
+    static const int cincuenta=50;
     
     /*-------errores por parte del server------*/
     static const char* error1;

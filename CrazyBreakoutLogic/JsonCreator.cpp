@@ -23,28 +23,28 @@ JsonCreator::~JsonCreator() {
  * bloques restantes en el campo.
  * @param pBolas dato tipo entero que es la cantidad de bolas en el campo.
  * @param pPlyrs dato tipo entero que es la cantidad de jugadores en el campo.
- * @param pBarrs dato tipo entero que es la cantidad de bloques en el campo.
+ * @param pBarrs dato tipo entero que es el bloque que queremos decir que
+ * recibio un golpe.
  * @return retorna un dato tipo string que es el Json creado.
  */
-string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs[],
+string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
         int pBolas, int pPlyrs, int pBarrs){
-    _mensaje="{";
+    _mensaje="{"+to_string(pBolas)+","+to_string(pPlyrs)+","+to_string(pBarrs);
     //ciclo para agregar a las pelotas.
     for(int i=0; i<pBolas;i++){
-        _mensaje+="bola"+to_string(i)+":"+to_string(bola[i]->getPx())+","+
+        _mensaje+=";Bo:"+to_string(bola[i]->getPx())+","+
                 to_string(bola[i]->getPy());
     }
     //ciclo para agregar a los jugadores.
     for(int i=0;i <pPlyrs; i++){
-        _mensaje+=";plyr"+to_string(i)+":"+to_string(plyrs[i]->getPosX())+","+
+        _mensaje+=";Pl:"+to_string(plyrs[i]->getPosX())+","+
                 to_string(plyrs[i]->getSize());
     }
     //ciclo para agregar a los bloques.
-    for(int i=0; i<pBarrs; i++){
-        _mensaje+=";barra"+to_string(i)+":"+to_string(bola[i]->getPx())+","+
-                to_string(bola[i]->getPy())+","+to_string(barrs[i]->getHitLft());
-    }
-    _mensaje+="}";
+    _mensaje+=";Bl:"+to_string(pBarrs)+","+
+            to_string(barrs->getHitLft());
+    barrs->setFlag(false);
+    _mensaje+=";}";
     return _mensaje;
 }
 

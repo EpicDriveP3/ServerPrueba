@@ -2,21 +2,16 @@
  * File:   structs.h
  * Author: ellioth
  *
- * Created on February 27, 2016, 9:56 PM
+ * Created on March 1, 2016, 1:54 PM
  */
 
 #ifndef STRUCTS_H
 #define	STRUCTS_H
 
-/**
- * struct que usaremos para pasar datos por medio de los 
- * hilos.
- */
 struct ThreadData{
-    int _Tsockfd;
     int _Tplyr;
+    int _Tsockfd;
 };
-
 
 #endif	/* STRUCTS_H */
 
