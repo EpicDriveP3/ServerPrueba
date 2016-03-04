@@ -9,21 +9,14 @@
 #include <iostream>
 #include <string>
 #include "Bola.h"
-#include "structs.h"
 #include <pthread.h>
+#include "servidor.h"
 
 using namespace std;
 
 pthread_mutex_t lock;
 
-void* metodoPrueba(void* datos){
-    ThreadData data=*((ThreadData*)datos);
-    pthread_mutex_lock(&lock);
-    cout<<data._Tplyr<<endl;
-    cout<<data._Tsockfd<<endl;
-    pthread_mutex_unlock(&lock);
-    return NULL;
-}
+
 /*
  * 
  */
@@ -66,13 +59,13 @@ int main(int argc, char** argv) {
     datos._Tplyr=1234;
     datos._Tsockfd=5678;
     metodoPrueba(&datos);
-     */
+     
     string dato="{2,1,64;Bo:200,300;Bo:100,500;Pl:200,10;}";
     string temp=dato;
     //cout<<dato.find(",")<<endl;
     int n=1,i,pos=dato.find(";");
     int pBola, pPlyrs, pBolcks;
-    /*----bloque para econtrar cantidad de datos----*/
+    ----bloque para econtrar cantidad de datos----
     i=temp.find(",",n);
     pBola=stoi(dato.substr(n,i));
     cout<<pBola<<endl;
@@ -86,7 +79,7 @@ int main(int argc, char** argv) {
     cout<<pBolcks<<endl;
     n=i+1;
     
-    /*----bloque para encontrar datos de una bola----*/
+    ----bloque para encontrar datos de una bola----
     cout<<"---bola---"<<endl;
     for(int f=0; f<pBola; f++){
         n=dato.find(":",n)+1;
@@ -109,9 +102,27 @@ int main(int argc, char** argv) {
         cout<<x<<endl;
         cout<<y<<endl;
     }
-    /*int i=temp.find(",");
+    int i=temp.find(",");
     cout<<stoi(dato.substr(n,i))<<endl;
     n=i+1;*/
+    /*
+    last= dato.find(":",last)+1;
+    actual= dato.find(",",last);
+    int BloqueID= stoi(dato.substr(last,actual));
+    last=actual+1;
+    actual=dato.find(";",last);
+    int hitsLeft=stoi(dato.substr(last,actual));
+    //aca tenes que establecer los atributos del bloque
+    //un ->setHits(hitsLeft); y el BloqueID lo usas para
+    //moverte en el arreglo de punteros que tenes para los bloques.
+    //como recomendacion podes mandar a eliminar el bloque si 
+    //el hitLeft==0*/
+    /**
+     * correr con un hilo esta vara 
+     */
+    //servidor * server= new servidor(5000);
+    //cout<<"prueba-1"<<endl;
+    //cin.ignore();
     return 0;
 }
 

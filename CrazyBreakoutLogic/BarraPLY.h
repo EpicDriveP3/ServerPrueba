@@ -8,6 +8,12 @@
 #ifndef BARRAPLY_H
 #define	BARRAPLY_H
 #include "Constantes.h"
+
+using namespace std;
+
+/**
+ * clase para crear los objetos de los bloques.
+ */
 class BarraPLY: public Constantes {
 public:
     BarraPLY(int pId);

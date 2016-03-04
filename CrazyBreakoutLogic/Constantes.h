@@ -8,48 +8,65 @@
 #ifndef CONSTANTES_H
 #define	CONSTANTES_H
 
+/**
+ * Datos internos para las constantes que se usaran en 
+ * el proyecto.
+ */
 class Constantes {
 private:
+    /* constante usada para definir el tamaño estandar de la paleta*/
     static const int BarraLengX=100;
 public:
-    //datos de pantallla
+    /*tamaño de la pantalla en X*/
     static const int ScreenX=800;
+    /*tamaño de la pantalla en Y*/
     static const int ScreenY=600;
-    //bandera para impirmir en pantalla
+    /*variable para validar los prints en pantalla*/
     static const bool debug=true;
-    //largo del mensaje
+    /*largo del mensaje que se espera recibir*/
     static const int LengMSG=2;
-    //cantidad de jugadores
+    /*cantidad maxima de recepcion de jugadores*/
     static const int MaxPlyrs=2;
     
     /*-----------jugador-------------*/
-    //dimensiones del cliente
+    /*largo de la paleta del jugador en X*/
     static const int PlayrLenght=100;
+    /*largo de la paleta del jugador en Y*/
     static const int PlayrLengY=20;
-    //posicion inicial del jugador
-    static const int initPosXPLY=25;
-    static const int PosYPLY=90;
-    //constantes para disminuir el tamaño del cliente
+    /*pos inicial de la paleta en X*/
+    static const int initPosXPLY=(ScreenX/2)-(PlayrLengY/2);
+    /*posicion fija en Y*/
+    static const int PosYPLY=ScreenY-(PlayrLengY+100);
+    /*constante para disminuir el tamaño de la barra*/
     static const int Decrement=-5;
+    /*constante para aumentar el tamaño de la barra*/
     static const int Increment=5;
-    //constante para mover el cliente
+    /*cantidad de movimiento en pixeles*/
     static const int pixlMovBrr=10;
     
     /*--------------bola-----------------*/
-    //sector de choque contra la paleta del cliente
+    /*espacio del choque con el primer sector de la barra para cambiar su 
+     direccion*/
     static const int BarraLengXSector1=BarraLengX*(1/3);
+    /*espacio del choque con el segundo sector de la barra para cambiar su 
+     direccion*/
     static const int BarraLengXSector2=BarraLengX*(2/3);
+    /*espacio del choque con el tercer sector de la barra para cambiar su 
+     direccion*/
     static const int BarraLengXSector3=BarraLengX;
-    //dimensiones de la bola
+    /*tamaño de la pelota*/
     static const int BallSize=20;
-    //constante para mover la bola
+    /*tamaño de la pelota, como es cuadrada solo se ocupa una constante*/
     static const int pixlMovBll=10;
     
     /*--------------bloques-------------*/
-    //cantidad de los bloques en pantalla
+    /*cantidad total de bloques con lo que trabajaremos*/
     static const int TotalBricks=64;
-    static const int ColBrick=4;
-    static const int RowBrick=16;
+    /*cantidad total de bloques por columna*/
+    static const int ColBrick=5;
+    /*cantidad total de bloques por fila*/
+    static const int RowBrick=15;
+    /*tamaño del bloque*/
     static const int BrrSize=50;
     
     //constantes varias

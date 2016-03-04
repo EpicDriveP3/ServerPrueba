@@ -7,18 +7,45 @@
 
 #include "servidor.h"
 
+/**
+ * contructor de la clase que recibe un puerto para establecerlo
+ * @param port es un dato tipo entero este es el puerto que usaremos
+ * en el servidor.
+ */
 servidor::servidor(int port) {
     _portno= port;
+    for(int i=0; i<MaxPlyrs; i++)
+        _Boolplyrs[i]=false;
+    int state= pthread_create(&_hiloServer,NULL,&servidor::ServerLoopHelper,
+            this);
+    if(state && debug)
+        error("falla en creacion de hilo server: ");
+    else if(debug)
+        cout<<"creacion de thread exitosa"<<endl;
+}
+
+servidor::~servidor() {
+}
+
+/**
+ * metodo que realiza el ciclo para escuchar a los clientes
+ * que se quieren conectar.
+ * @return no retorna nada, ese retorno se usa para la creacion 
+ * de los pthread.
+ */
+void* servidor::ServerLoop() {
     _sockfd = socket(AF_INET, SOCK_STREAM, cero);
     //resivision de si la conexion del socket 
     // fue positiva o fallida.
     if (_sockfd <cero)
         error(error1);
+    cout<<"prueba-1"<<endl;
     //se escibe 0s en la variables puesta.
     //esto garantiza que no se use memoria sucia.
     bzero((char *) &_serv_addr, sizeof(_serv_addr));
     //establecemos los datos que se van a utilizar 
     //en el socket.
+    cout<<"prueba-1"<<endl;
     _serv_addr.sin_family = AF_INET;
     _serv_addr.sin_addr.s_addr = INADDR_ANY;
     _serv_addr.sin_port = htons(_portno);
@@ -28,6 +55,7 @@ servidor::servidor(int port) {
     listen(_sockfd,cinco);
     _clilen = sizeof(_cli_addr);
     _Tplayrs=0;
+    cout<<"prueba-1"<<endl;
     while(true){
         _newsockfd = accept(_sockfd, (struct sockaddr*) &_cli_addr, &_clilen);
         if (_newsockfd < cero)
@@ -49,9 +77,6 @@ servidor::servidor(int port) {
         else close(_newsockfd);
     }
     close(_sockfd);
-}
-
-servidor::~servidor() {
 }
 
 /**

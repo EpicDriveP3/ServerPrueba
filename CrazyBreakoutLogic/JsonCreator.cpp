@@ -41,9 +41,11 @@ string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
                 to_string(plyrs[i]->getSize());
     }
     //ciclo para agregar a los bloques.
-    _mensaje+=";Bl:"+to_string(pBarrs)+","+
-            to_string(barrs->getHitLft());
-    barrs->setFlag(false);
+    if(pBarrs>cero){
+        _mensaje+=";Bl:"+to_string(pBarrs)+","+
+                to_string(barrs->getHitLft());
+        barrs->setFlag(false);
+    }
     _mensaje+=";}";
     return _mensaje;
 }

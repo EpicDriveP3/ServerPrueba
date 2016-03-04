@@ -8,6 +8,10 @@
 #ifndef BOLA_H
 #define	BOLA_H
 #include "Constantes.h"
+
+/**
+ * clase para crear objetos del tipo bola.
+ */
 class Bola: public Constantes {
     
 public:

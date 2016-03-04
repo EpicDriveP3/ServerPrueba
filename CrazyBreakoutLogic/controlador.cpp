@@ -16,6 +16,8 @@ controlador::controlador(int Pport) {
         for(int j=cero; j<RowBrick;j++,space++)
             _barras[space]=new BarraDes(j*BrrSize,(i*BrrSize)+(cincuenta),
                     j+uno);
+    for(int i=0; i<MaxPlyrs; i++)
+        _ply[i]=NULL;
     MainLoop();
 }
 
@@ -28,10 +30,12 @@ controlador::~controlador() {
 /**
  * ciclo principal para revizar todo.
  */
-void controlador::MainLoop() {
+void controlador::MainLoop(){
     while(true){
-        while(_servidor->getTplyrs()>cero){
-            for(int i=cero; i<MaxPlyrs; i++){
+        if(_servidor->getTplyrs()>cero){
+            for(int i=cero; i<_servidor->getTplyrs(); i++){
+                if(_ply[i]==NULL)
+                    _ply[i]= new BarraPLY(i);
                 if(_servidor->getBoolPlyrs(i)){
                     _ply[i]->move(stoi(_servidor->getMSGPlyrs(i)));
                     _servidor->setBoolPlyrs(i);
@@ -41,7 +45,7 @@ void controlador::MainLoop() {
             string msg=_Json->create(_pelota, _ply, _barras[_BarrsHit],
                     _BallsLeft,_Tplys,_BarrsHit);
             _servidor->sendMSG(msg.c_str(),msg.length());
-        }
+        }   
     }
 }
 
@@ -52,16 +56,16 @@ void controlador::MainLoop() {
 void controlador::checkColl() {
     int x,y;
     //bloque para verificar choques con limites de pantalla
-    if(_pelota[cero]->getPx()==ScreenX)
+    if(_pelota[cero]->getPx()+BallSize==ScreenX)
         x=-1;
     else if(_pelota[cero]->getPx()==cero)
         x=-1;
-    if(_pelota[cero]->getPy()==ScreenY)
+    if(_pelota[cero]->getPy()+BallSize==ScreenY)
         y=-1;
     else if(_pelota[cero]->getPy()==cero)
         y=-1;
     //verificacion para choque contra la paleta de cada jugador.
-    for(int i =0; i<_Tplys; i++)
+    for(int i =0; i<_servidor->getTplyrs(); i++)
         checkCollPly(i,&x,&y);
     //verificaciones para colicion contra cada uno de los bloques.
     for(int i=0; i<TotalBricks; i++)

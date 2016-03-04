@@ -7,6 +7,12 @@
 
 #include "Bola.h"
 
+/**
+ * contructor que recibe la poscion en donde 
+ * se va a ubicar.
+ * @param x dato tipo entero, es la coordenada en X de la bola.
+ * @param y dato tipo entero, es la coordenada en Y de la bola.
+ */
 Bola::Bola(int x, int y){
     _Posx=x;
     _Posy=y;
