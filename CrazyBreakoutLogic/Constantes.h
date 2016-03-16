@@ -24,7 +24,7 @@ public:
     /*variable para validar los prints en pantalla*/
     static const bool debug=true;
     /*largo del mensaje que se espera recibir*/
-    static const int LengMSG=2;
+    static const int LengMSG=1;
     /*cantidad maxima de recepcion de jugadores*/
     static const int MaxPlyrs=2;
     
@@ -88,6 +88,7 @@ public:
     static const char* error4;
     static const char* error5;
     static const char* error6;
+    static const char* NullMsg;
     
 };
 

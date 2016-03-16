@@ -10,6 +10,7 @@
 #include <string>
 #include "Bola.h"
 #include <pthread.h>
+#include <string.h>
 #include "servidor.h"
 
 using namespace std;
@@ -120,9 +121,23 @@ int main(int argc, char** argv) {
     /**
      * correr con un hilo esta vara 
      */
-    //servidor * server= new servidor(5000);
-    //cout<<"prueba-1"<<endl;
-    //cin.ignore();
+    pthread_mutex_t _lock;
+    if(pthread_mutex_init(&_lock,NULL)!=0)
+    return -1;
+    servidor * server= new servidor(5000);
+    cout<<"prueba-1"<<endl;
+    while(true){
+        cout<<"prueba-2"<<endl;
+        cout<<server->getTplyrs()<<endl;
+        for(int i =0; i<server->getTplyrs(); i++){
+            if(server->getMSGPlyrs(i)!="N"){
+                pthread_mutex_lock(&_lock);
+                cout<<server->getMSGPlyrs(i)<<endl;
+                server->setMsg(i);
+                pthread_mutex_unlock(&_lock);
+            }
+        }
+    }
     return 0;
 }
 

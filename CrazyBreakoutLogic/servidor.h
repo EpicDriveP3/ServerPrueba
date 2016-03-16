@@ -19,6 +19,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include "Constantes.h"
+#include "structs.h"
 
 using namespace std;
 
@@ -34,13 +35,14 @@ public:
     void sendMSG(const char* msg, int lenght);
     bool getBoolPlyrs(int plyr);
     void setBoolPlyrs(int plyr);
+    void setMsg(int plyr);
     string getMSGPlyrs(int plyr);
     int getTplyrs();
 private:
     //bloqueo mutex
     pthread_mutex_t _lock;
     //hilo para el listener
-    pthread_t _hiloServer;
+    pthread_t _hiloServer, _hiloCliente[MaxPlyrs];
     int counter;
     //datos propios de la instanciacion del servidor
     int _sockfd, _newsockfd, _portno, _n, _codigos;
@@ -49,12 +51,12 @@ private:
     struct sockaddr_in _serv_addr, _cli_addr;
     //datos para hacer el observer
     bool _Boolplyrs[MaxPlyrs];
-    char* _plyMSG[MaxPlyrs];
+    string _plyMSG[MaxPlyrs];
     //_ToScreen es el sockfd que sera el cliente al cual se le envia
     //la imagen.
     int _ToScreen, _Tplayrs;
     void* ServerLoop(void);
-    void gettDatas(int plyr, int newsockfd);
+    void* gettDatas(int plyr, int newsockfd);
     void error(const char* msg);
     /**
      * metodo estatico que permite acceder al metodo que incializa el
@@ -64,6 +66,17 @@ private:
      */
     static void * ServerLoopHelper(void* data){
       return ((servidor*)data)->ServerLoop();  
+    };
+    
+    /**
+     * metodo estatico que permite acceder al metodo que incializa el
+     * ciclo que arranca el listener del server.
+     * @param data recibe un this de la clase
+     * @return retorna el acceso al ciclo de la clase.
+     */
+    static void * ClienteLoopHelper(void *data){
+        ThreadClienteData dt= (*(ThreadClienteData*)data);
+        return ((servidor*)dt.data)->gettDatas(dt.playr,dt.sockFd);
     };
 };
 

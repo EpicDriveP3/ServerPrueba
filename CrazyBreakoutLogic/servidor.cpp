@@ -15,10 +15,11 @@
 servidor::servidor(int port) {
     _portno= port;
     for(int i=0; i<MaxPlyrs; i++)
-        _Boolplyrs[i]=false;
-    int state= pthread_create(&_hiloServer,NULL,&servidor::ServerLoopHelper,
-            this);
-    if(state && debug)
+        _plyMSG[i]="N";
+    if(pthread_mutex_init(&_lock,NULL)!=cero)
+        error("mutex falied at create");
+    if(pthread_create(&_hiloServer,NULL,&servidor::ServerLoopHelper,
+            this)!=cero)
         error("falla en creacion de hilo server: ");
     else if(debug)
         cout<<"creacion de thread exitosa"<<endl;
@@ -39,13 +40,11 @@ void* servidor::ServerLoop() {
     // fue positiva o fallida.
     if (_sockfd <cero)
         error(error1);
-    cout<<"prueba-1"<<endl;
     //se escibe 0s en la variables puesta.
     //esto garantiza que no se use memoria sucia.
     bzero((char *) &_serv_addr, sizeof(_serv_addr));
     //establecemos los datos que se van a utilizar 
     //en el socket.
-    cout<<"prueba-1"<<endl;
     _serv_addr.sin_family = AF_INET;
     _serv_addr.sin_addr.s_addr = INADDR_ANY;
     _serv_addr.sin_port = htons(_portno);
@@ -54,29 +53,30 @@ void* servidor::ServerLoop() {
     //se pone a escuchar en el socket si hay nuevas conexiones.
     listen(_sockfd,cinco);
     _clilen = sizeof(_cli_addr);
-    _Tplayrs=0;
-    cout<<"prueba-1"<<endl;
+    _Tplayrs=cero;
     while(true){
         _newsockfd = accept(_sockfd, (struct sockaddr*) &_cli_addr, &_clilen);
         if (_newsockfd < cero)
             error(error3);
         if(_Tplayrs==cero)
             _ToScreen=_newsockfd;
-        int pid= fork();
-        if(pid<cero)
+        //bloque para crear datos para el cliente
+        ThreadClienteData temp;
+        temp.data=this;
+        temp.playr=_Tplayrs;
+        temp.sockFd=_newsockfd;
+        //creacion del hilo para el cliente.
+        if(pthread_create(&_hiloCliente[_Tplayrs],NULL,
+                &servidor::ClienteLoopHelper,&temp)!=cero)
             error(error4);
-        if (pid == cero){
-            close(_sockfd);
-            gettDatas(_Tplayrs,_newsockfd);
-            _Tplayrs++;
-            exit(cero);
-         }
+        _Tplayrs+=uno;
         if(debug)
             printf("servidor: got connection from %s port %d\n",
                     inet_ntoa(_cli_addr.sin_addr), ntohs(_cli_addr.sin_port));
         else close(_newsockfd);
     }
     close(_sockfd);
+    pthread_exit(NULL);
 }
 
 /**
@@ -97,20 +97,23 @@ void servidor::error(const char* msg) {
  * @param newsockfd dato entero que es el socket del cliente con el que
  * nos comunicamos.
  */
-void servidor::gettDatas(int pPlyr, int newsockfd) {
-    void* almacenador= malloc(sizeof(LengMSG));
+void* servidor::gettDatas(int pPlyr, int newsockfd) {
+    void* almacenador= malloc(LengMSG);
+    bzero(almacenador, LengMSG);
     while(true){
-        while(!getBoolPlyrs(pPlyr)){
-            bzero(almacenador, sizeof(LengMSG));
-            _n = read(newsockfd,almacenador,sizeof(LengMSG));
-            if (_n < cero)
-                error(error6);
-            pthread_mutex_lock(&_lock);
-            _Boolplyrs[pPlyr]=true;
-            _plyMSG[pPlyr]=(char*)almacenador;
-            pthread_mutex_unlock(&_lock);
-        }
+        if(debug)cout<<"unlock"<<endl;
+        cout<<pPlyr<<endl;
+        _n = read(newsockfd,almacenador,LengMSG);
+        if(debug)cout<<"mensaje recibido: "<<(char*)almacenador<<endl;
+        if (_n < cero)
+            error(error6);
+        pthread_mutex_lock(&_lock);
+        _plyMSG[pPlyr]=string((char *)almacenador);
+        pthread_mutex_unlock(&_lock);
+        bzero(almacenador, LengMSG);
+        if(debug)cout<<"lock"<<endl;
     }
+    pthread_exit(NULL);
 }
 
 
@@ -120,7 +123,7 @@ void servidor::gettDatas(int pPlyr, int newsockfd) {
  * @param lenght dato tipo entero, este es el largo del mensaje.
  */
 void servidor::sendMSG(const char* msg, int lenght) {
-    _n=write(_ToScreen, msg, LengMSG);
+    _n=write(_ToScreen, msg, lenght);
     if (_n < cero) 
         error(error5);
     if(debug)
@@ -151,6 +154,13 @@ void servidor::setBoolPlyrs(int plyr) {
     pthread_mutex_unlock(&_lock);
 }
 
+void servidor::setMsg(int plyr) {
+    pthread_mutex_lock(&_lock);
+    _plyMSG[plyr]="N";
+    pthread_mutex_unlock(&_lock);
+}
+
+
 /**
  * metodo para obtener el mensaje que envia el cliente, ya tiene el mutex.
  * @param plyr recibe un dato tipo entero que es el numero de cliente
@@ -169,5 +179,8 @@ string servidor::getMSGPlyrs(int plyr) {
  * @return dato entero.
  */
 int servidor::getTplyrs() {
-    return _Tplayrs;
+    pthread_mutex_lock(&_lock);
+    int var=_Tplayrs;
+    pthread_mutex_lock(&_lock);
+    return var;
 }
