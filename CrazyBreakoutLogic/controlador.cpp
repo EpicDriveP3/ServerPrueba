@@ -13,16 +13,18 @@ controlador::controlador(int Pport) {
     _servidor= new servidor(_port);
     //inicializar pelota
     _pelota[cero]= new Bola(ScreenX/dos-BallSize,PosYPLY-(BallSize+dos));
-    //incializacion de los bloques
-    int space=cero;
-    for(int j =cero; j<RowBrick; j++)
-        for(int i=cero; i<ColBrick;i++,space++)
-            _barras[space]=new BarraDes(j*BrrSize,(i*BrrSize)+(cincuenta),
-                    j+uno);
     //creacion de la direccion random
     srand(time(NULL));
     _dirrection=(rand()%tres)+uno;
     _BarrsLeft=TotalBricks;
+    //incializacion de los bloques
+    int space=cero;
+    for(int j =cero; j<RowBrick; j++)
+        for(int i=cero; i<ColBrick;i++,space++){
+            int fuerza= (rand()%tres)+uno;
+            _barras[space]=new BarraDes(j*BrrSize,(i*BrrSize)+(cincuenta),
+                    fuerza);
+        }
     //entramos al hilo principal
     MainLoop();
     if(debug)cout<<"juego terminado"<<endl;
@@ -55,12 +57,13 @@ void controlador::MainLoop(){
             string msg;
             //revisamos de primero la condicion de terminacion.
             if(_BallsLeft==cero || _BarrsLeft==cero){
-                msg=_Json->create(NULL, _ply, NULL,_BallsLeft,_Tplys,-uno);
+                msg=_Json->create(NULL, _ply, NULL,_BallsLeft,_Tplys,-dos);
                 _servidor->sendMSG(msg.c_str(),msg.length());
                 break;
             }
             else if(_BarrsHit==-uno){
-                msg=_Json->create(_pelota, _ply, NULL,_BallsLeft,_Tplys,cero);
+                msg=_Json->create(_pelota, _ply, NULL,_BallsLeft,
+                        _Tplys,_BarrsHit);
             }
             //en caso de que no seguimos normalmente
             else
@@ -196,12 +199,13 @@ void controlador::checkCollBrr(int bar, int * x, int * y, bool * bandera) {
     }
     /*verificacion para realizar una colicion y saber si se tieene que destruir
     el objeto*/
-    if(bandera){
-        _BarrsLeft--;
+    if(*bandera){
         _BarrsHit=bar;
         _barras[bar]->impact();
-        if(_barras[bar]->getHitLft()==cero)
+        if(_barras[bar]->getHitLft()==cero){
+            _BarrsLeft--;
             destroyObj(bar);
+        }
     }
         
 }

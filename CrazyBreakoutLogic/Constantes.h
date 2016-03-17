@@ -26,7 +26,7 @@ public:
     /*largo del mensaje que se espera recibir*/
     static const int LengMSG=1;
     /*cantidad maxima de recepcion de jugadores*/
-    static const int MaxPlyrs=2;
+    static const int MaxPlyrs=10;
     
     /*-----------jugador-------------*/
     /*largo de la paleta del jugador en X*/

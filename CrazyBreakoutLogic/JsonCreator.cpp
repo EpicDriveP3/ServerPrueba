@@ -29,7 +29,7 @@ JsonCreator::~JsonCreator() {
  */
 string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
         int pBolas, int pPlyrs, int pBarrs){
-    if(pBolas==cero || pBarrs==-uno)
+    if(pBolas==cero || pBarrs==-dos)
         _mensaje="terminate";
     else{
         _mensaje="{"+to_string(pBolas)+","+to_string(pPlyrs)+","+to_string(pBarrs);
@@ -44,9 +44,10 @@ string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
                     to_string(plyrs[i]->getSize());
         }
         //ciclo para agregar el bloque.
-        if(pBarrs>cero){
-            _mensaje+=";Bl:"+to_string(pBarrs)+","+
-                    to_string(barrs->getHitLft());
+        if(barrs==NULL && pBarrs>=cero)
+            _mensaje+=";Bl:"+to_string(pBarrs)+","+to_string(cero);
+        else if(pBarrs>=cero){
+            _mensaje+=";Bl:"+to_string(pBarrs)+","+to_string(cero);
         }
         _mensaje+=";}";
     }
