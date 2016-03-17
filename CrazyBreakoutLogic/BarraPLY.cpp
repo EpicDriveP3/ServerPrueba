@@ -69,9 +69,9 @@ int BarraPLY::resize(int pOP) {
  * @param pX recibe un dato tipo entero, este puede ser un 
  * positivo o negativo de hacia donde moverse.
  */
-void BarraPLY::move(int pX) {
-    if (pX>cero)
+void BarraPLY::move(string pX) {
+    if (pX==RightMove)
         _PosX+=pixlMovBrr;
-    else if (pX<cero)
+    else if (pX==LeftMove)
         _PosX-=pixlMovBrr;
 }

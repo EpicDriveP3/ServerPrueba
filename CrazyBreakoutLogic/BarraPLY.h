@@ -8,6 +8,8 @@
 #ifndef BARRAPLY_H
 #define	BARRAPLY_H
 #include "Constantes.h"
+#include <string>
+#include <string.h>
 
 using namespace std;
 
@@ -22,7 +24,7 @@ public:
     int resize(int pOP);
     int getPosX();
     int getPosY();
-    void move(int pX);
+    void move(string pX);
 private:
     int _id;
     int _PosX,_PosY;

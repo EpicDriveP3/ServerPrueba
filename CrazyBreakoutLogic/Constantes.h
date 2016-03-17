@@ -43,6 +43,12 @@ public:
     static const int Increment=5;
     /*cantidad de movimiento en pixeles*/
     static const int pixlMovBrr=10;
+    /**mensaje de que el movimiento es nulo*/
+    static const char* NullMove;
+    /**mensaje de que el movimiento es izquierdo*/
+    static const char* LeftMove;
+    /**mensaje de que el movimiento es derecho*/
+    static const char* RightMove;
     
     /*--------------bola-----------------*/
     /*espacio del choque con el primer sector de la barra para cambiar su 
@@ -57,15 +63,15 @@ public:
     /*tamaño de la pelota*/
     static const int BallSize=20;
     /*tamaño de la pelota, como es cuadrada solo se ocupa una constante*/
-    static const int pixlMovBll=10;
+    static const int pixlMovBll=1;
     
     /*--------------bloques-------------*/
     /*cantidad total de bloques con lo que trabajaremos*/
     static const int TotalBricks=64;
     /*cantidad total de bloques por columna*/
-    static const int ColBrick=5;
+    static const int ColBrick=4;
     /*cantidad total de bloques por fila*/
-    static const int RowBrick=15;
+    static const int RowBrick=16;
     /*tamaño del bloque*/
     static const int BrrSize=50;
     
@@ -88,7 +94,6 @@ public:
     static const char* error4;
     static const char* error5;
     static const char* error6;
-    static const char* NullMsg;
     
 };
 

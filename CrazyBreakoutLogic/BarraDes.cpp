@@ -63,22 +63,3 @@ int BarraDes::getType() {
 void BarraDes::impact() {
     _hitsLft--;
 }
-
-/**
- * metodo necesario para establecer la bandera de si ha recibido un impacto,
- * va recibir datos ya que esta puede hacerce falsa o verdadera.
- * @param flag recibe un dato booleano que es este indica si ha recibido 
- * impacto o no.
- */
-void BarraDes::setFlag(bool flag) {
-    _flag=flag;
-}
-
-/**
- * metodo para obtener el estado de la bandera de impactos.
- * @return retorna un dato tipo booleano, esta esla bandera y nos indica
- * si ha recibido impacto o no.
- */
-bool BarraDes::getFlag() {
-    return _flag;
-}

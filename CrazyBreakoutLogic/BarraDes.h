@@ -21,8 +21,6 @@ public:
     int getPosX();
     int getPosY();
     void impact();
-    void setFlag(bool flag);
-    bool getFlag();
 private:
     int _Posx, _Posy;
     int _hitsLft;

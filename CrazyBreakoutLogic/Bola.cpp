@@ -57,11 +57,11 @@ int Bola::getPy() {
 void Bola::move(int pX, int pY) {
     if (pX>cero)
         _Posx+=pixlMovBll;
-    else
+    else if(pX<cero)
         _Posx-=pixlMovBll;
     if (pY>cero)
         _Posy+=pixlMovBll;
-    else
+    else if(pY<cero)
         _Posy-=pixlMovBll;
     
 }

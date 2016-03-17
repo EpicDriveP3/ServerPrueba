@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <strings.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 /**
@@ -31,7 +33,6 @@ friend class servidor;
 public:
     controlador(int Pport);
     virtual ~controlador();
-    void setDirection(int pDirr);
 private:
     //pelota en el campo
     Bola* _pelota[cinco];
@@ -45,16 +46,17 @@ private:
     JsonCreator * _Json;
     //dato entero que es puerto por el cual van a acceder los clientes.
     int _port;
+    int _dirrection;
     /**
      * _BallsLeft-> dato que contiene la cantidad de pelotas en campo
      * _BarrsLeft-> dato que contiene la cantidad de barras restante en campo.
      */
-    int _Tplys, _BallsLeft,_BarrsHit;
+    int _Tplys, _BallsLeft,_BarrsHit,_BarrsLeft;
     void MainLoop();
     void destroyObj(int BarNum);
     void resizeBar(int pTypeOP);
     void checkColl();
-    void checkCollBrr(int bar, int *x, int*y);
+    void checkCollBrr(int bar, int *x, int*y, bool *bandera);
     void checkCollPly(int plyr, int *x, int*y);
     bool getBoolMutex(int plyr);
     string getMsgMutex(int plyr);

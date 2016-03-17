@@ -11,12 +11,11 @@
 #include "Bola.h"
 #include <pthread.h>
 #include <string.h>
+#include <random>
 #include "servidor.h"
+#include "controlador.h"
 
 using namespace std;
-
-pthread_mutex_t lock;
-
 
 /*
  * 
@@ -107,37 +106,55 @@ int main(int argc, char** argv) {
     cout<<stoi(dato.substr(n,i))<<endl;
     n=i+1;*/
     /*
-    last= dato.find(":",last)+1;
-    actual= dato.find(",",last);
-    int BloqueID= stoi(dato.substr(last,actual));
-    last=actual+1;
-    actual=dato.find(";",last);
-    int hitsLeft=stoi(dato.substr(last,actual));
-    //aca tenes que establecer los atributos del bloque
-    //un ->setHits(hitsLeft); y el BloqueID lo usas para
-    //moverte en el arreglo de punteros que tenes para los bloques.
-    //como recomendacion podes mandar a eliminar el bloque si 
-    //el hitLeft==0*/
-    /**
-     * correr con un hilo esta vara 
-     */
-    pthread_mutex_t _lock;
-    if(pthread_mutex_init(&_lock,NULL)!=0)
-    return -1;
+    /*prueba para server
     servidor * server= new servidor(5000);
-    cout<<"prueba-1"<<endl;
     while(true){
-        cout<<"prueba-2"<<endl;
-        cout<<server->getTplyrs()<<endl;
         for(int i =0; i<server->getTplyrs(); i++){
-            if(server->getMSGPlyrs(i)!="N"){
-                pthread_mutex_lock(&_lock);
+            if(server->getBoolPlyrs(i)){
                 cout<<server->getMSGPlyrs(i)<<endl;
-                server->setMsg(i);
-                pthread_mutex_unlock(&_lock);
+                server->setBoolPlyrs(i);
             }
         }
+    }*/
+    
+    controlador * pruebaControlador = new controlador(5000);
+    
+    /*prueba de coliciones
+    Bola * pBola= new Bola(180,150);
+    BarraDes * pBloque = new BarraDes(130,160,1);
+    int y=0,x=0;
+    bool bandera;
+    if(pBola->getPy()==(pBloque->getPosY()+50)&&
+            (pBola->getPx()+20)>=pBloque->getPosX()&&
+            pBola->getPx()<=(pBloque->getPosX()+50)){
+        y=1;
+        bandera=true;
     }
+    //choque de pelota en la parte superior de la barra
+    else if(pBola->getPy()+20==pBloque->getPosY() &&
+            (pBola->getPx()+20)>=pBloque->getPosX() &&
+            pBola->getPx()<=(pBloque->getPosX()+50)){
+        y=-1;
+        bandera=true;
+    }
+    //choque de pelota en la parte izquierda de la barra
+    else if((pBola->getPx()+20)==pBloque->getPosX() &&
+            (pBola->getPy()+20)>=pBloque->getPosY() &&
+            pBola->getPy()<=(pBloque->getPosY()+50)){
+        x=-1;
+        bandera=true;
+    }
+    //choque de pelota en la parte derecha de la barra
+    else if(pBola->getPx()==(pBloque->getPosX()+50) &&
+            (pBola->getPy()+20)>=pBloque->getPosY() &&
+            pBola->getPy()<=(pBloque->getPosY()+50)){
+        x=1;
+        bandera=true;
+    }
+    pBola->move(x,y);
+    cout<<"posX: "<<pBola->getPx()<<endl;
+    cout<<"posY: "<<pBola->getPy()<<endl;
+     * */
     return 0;
 }
 

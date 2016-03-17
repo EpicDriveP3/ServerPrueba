@@ -29,24 +29,27 @@ JsonCreator::~JsonCreator() {
  */
 string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
         int pBolas, int pPlyrs, int pBarrs){
-    _mensaje="{"+to_string(pBolas)+","+to_string(pPlyrs)+","+to_string(pBarrs);
-    //ciclo para agregar a las pelotas.
-    for(int i=0; i<pBolas;i++){
-        _mensaje+=";Bo:"+to_string(bola[i]->getPx())+","+
-                to_string(bola[i]->getPy());
+    if(pBolas==cero || pBarrs==-uno)
+        _mensaje="terminate";
+    else{
+        _mensaje="{"+to_string(pBolas)+","+to_string(pPlyrs)+","+to_string(pBarrs);
+        //ciclo para agregar a las pelotas.
+        for(int i=0; i<pBolas;i++){
+            _mensaje+=";Bo:"+to_string(bola[i]->getPx())+","+
+                    to_string(bola[i]->getPy());
+        }
+        //ciclo para agregar a los jugadores.
+        for(int i=0;i <pPlyrs; i++){
+            _mensaje+=";Pl:"+to_string(plyrs[i]->getPosX())+","+
+                    to_string(plyrs[i]->getSize());
+        }
+        //ciclo para agregar el bloque.
+        if(pBarrs>cero){
+            _mensaje+=";Bl:"+to_string(pBarrs)+","+
+                    to_string(barrs->getHitLft());
+        }
+        _mensaje+=";}";
     }
-    //ciclo para agregar a los jugadores.
-    for(int i=0;i <pPlyrs; i++){
-        _mensaje+=";Pl:"+to_string(plyrs[i]->getPosX())+","+
-                to_string(plyrs[i]->getSize());
-    }
-    //ciclo para agregar a los bloques.
-    if(pBarrs>cero){
-        _mensaje+=";Bl:"+to_string(pBarrs)+","+
-                to_string(barrs->getHitLft());
-        barrs->setFlag(false);
-    }
-    _mensaje+=";}";
     return _mensaje;
 }
 
