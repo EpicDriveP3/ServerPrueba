@@ -82,7 +82,16 @@ void controlador::MainLoop(){
                     _BallsLeft,_servidor->getTplyrs(),_BarrsHit);
             }
             _servidor->sendMSG(msg.c_str(),msg.length());
-            sleep(sleepTime);
+            //mandar a dormir al hilo principal para que pueda tener 
+            //tiempo la gui de procesar todo.
+            struct timespec tim, tim2;
+            tim.tv_nsec=0;
+            tim2.tv_nsec=500000000L;
+            if(nanosleep(&tim,&tim2)<cero){
+                cout<<"nanosleep fail"<<endl;
+                return;
+            }
+                
         }   
     }
 }
