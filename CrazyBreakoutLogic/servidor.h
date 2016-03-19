@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include "Constantes.h"
 #include "structs.h"
+#include "lista.h"
+#include "nodo.h"
 
 using namespace std;
 
@@ -38,6 +40,7 @@ public:
     void setMsg(int plyr);
     string getMSGPlyrs(int plyr);
     int getTplyrs();
+    int getScreens();
 private:
     //bloqueo mutex
     pthread_mutex_t _lock;
@@ -54,9 +57,11 @@ private:
     string _plyMSG[MaxPlyrs];
     //_ToScreen es el sockfd que sera el cliente al cual se le envia
     //la imagen.
-    int _ToScreen, _Tplayrs;
+    lista * _Screens;
+    int _Tplayrs;
     void* ServerLoop(void);
     void* gettDatas(int plyr, int newsockfd);
+    void ClasiFFClient(int SockFd, bool* bandera);
     void error(const char* msg);
     /**
      * metodo estatico que permite acceder al metodo que incializa el

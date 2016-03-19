@@ -27,6 +27,8 @@ public:
     static const int LengMSG=1;
     /*cantidad maxima de recepcion de jugadores*/
     static const int MaxPlyrs=10;
+    /*verificacion de si se conecta una pantalla*/
+    static const char* ScreenConTT;
     
     /*-----------jugador-------------*/
     /*largo de la paleta del jugador en X*/
@@ -64,6 +66,8 @@ public:
     static const int BallSize=20;
     /*tamaño de la pelota, como es cuadrada solo se ocupa una constante*/
     static const int pixlMovBll=1;
+    /*cantidad maxima de pelotas permitidas*/
+    static const int MaxBalls=1;
     
     /*--------------bloques-------------*/
     /*cantidad total de bloques con lo que trabajaremos*/
@@ -86,6 +90,7 @@ public:
     static const int siete=7;
     static const int diez=10;
     static const int cincuenta=50;
+    static const int sleepTime=1;
     
     /*-------errores por parte del server------*/
     static const char* error1;

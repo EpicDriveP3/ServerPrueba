@@ -29,27 +29,38 @@ JsonCreator::~JsonCreator() {
  */
 string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
         int pBolas, int pPlyrs, int pBarrs){
-    if(pBolas==cero || pBarrs==-dos)
+    string _mensaje,temp;
+    //crea un mensaje que indica la terminacion del juego.
+    if(pBolas==cero || pBarrs==-dos){
         _mensaje="terminate";
+    }
+    //condicion para cuando aun no ha terminado el juego
     else{
-        _mensaje="{"+to_string(pBolas)+","+to_string(pPlyrs)+","+to_string(pBarrs);
+        //agregamos al inicio del mensaje la cantidad de datos que van
+        _mensaje="{"+to_string(pBolas)+","+ to_string(pPlyrs)
+                +","+ to_string(pBarrs);
         //ciclo para agregar a las pelotas.
         for(int i=0; i<pBolas;i++){
-            _mensaje+=";Bo:"+to_string(bola[i]->getPx())+","+
-                    to_string(bola[i]->getPy());
+            temp=";Bo:"+to_string(bola[i]->getPx())+
+                    ","+to_string(bola[i]->getPy());
+            _mensaje.append(temp);
         }
         //ciclo para agregar a los jugadores.
         for(int i=0;i <pPlyrs; i++){
-            _mensaje+=";Pl:"+to_string(plyrs[i]->getPosX())+","+
+            temp=";Pl:"+to_string(plyrs[i]->getPosX())+","+
                     to_string(plyrs[i]->getSize());
+            _mensaje.append(temp);
         }
-        //ciclo para agregar el bloque.
-        if(barrs==NULL && pBarrs>=cero)
-            _mensaje+=";Bl:"+to_string(pBarrs)+","+to_string(cero);
+        //parte para agregar el bloque.
+        if(barrs==NULL && pBarrs>=cero){
+            temp=";Bl:"+to_string(pBarrs)+","+to_string(cero);
+            _mensaje.append(temp);
+        }
         else if(pBarrs>=cero){
-            _mensaje+=";Bl:"+to_string(pBarrs)+","+to_string(cero);
+            temp=";Bl:"+to_string(pBarrs)+","+to_string(barrs->getHitLft());
+            _mensaje.append(temp);
         }
-        _mensaje+=";}";
+        _mensaje.append(";}");
     }
     return _mensaje;
 }

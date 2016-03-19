@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <unistd.h>
 #include <strings.h>
 #include <stdlib.h>
 #include <time.h>
@@ -35,7 +36,7 @@ public:
     virtual ~controlador();
 private:
     //pelota en el campo
-    Bola* _pelota[cinco];
+    Bola* _pelota[MaxBalls];
     //barras que se destruiran en el campo
     BarraDes * _barras[TotalBricks];
     //paleta de jugadores
@@ -47,19 +48,19 @@ private:
     //dato entero que es puerto por el cual van a acceder los clientes.
     int _port;
     int _dirrection;
+    //variables para desplazar la pelota sobre la pantalla
+    int _MoveBallX,_MoveBallY;
     /**
      * _BallsLeft-> dato que contiene la cantidad de pelotas en campo
      * _BarrsLeft-> dato que contiene la cantidad de barras restante en campo.
      */
-    int _Tplys, _BallsLeft,_BarrsHit,_BarrsLeft;
+    int _BallsLeft,_BarrsHit,_BarrsLeft;
     void MainLoop();
     void destroyObj(int BarNum);
     void resizeBar(int pTypeOP);
     void checkColl();
     void checkCollBrr(int bar, int *x, int*y, bool *bandera);
-    void checkCollPly(int plyr, int *x, int*y);
-    bool getBoolMutex(int plyr);
-    string getMsgMutex(int plyr);
+    void checkCollPly(int plyr, int *x, int*y, bool *bandera);
 };
 
 #endif	/* CONTROLER_H */

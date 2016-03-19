@@ -8,6 +8,7 @@
 #ifndef JASONCREATOR_H
 #define	JASONCREATOR_H
 #include <string>
+#include <iostream>
 #include "BarraDes.h"
 #include "BarraPLY.h"
 #include "Bola.h"
@@ -27,7 +28,6 @@ public:
     string create(Bola* bola[], BarraPLY* plyrs[], BarraDes* Barrs,int pBolas,
     int pPlyrs, int pBarrs);
 private:
-    string _mensaje;
 };
 
 #endif	/* JASONCREATOR_H */

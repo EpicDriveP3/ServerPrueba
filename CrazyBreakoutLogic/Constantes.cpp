@@ -17,3 +17,4 @@ const char* Constantes::error6="ERROR reading from socket";
 const char* Constantes::NullMove="N";
 const char* Constantes::LeftMove="L";
 const char* Constantes::RightMove="R";
+const char* Constantes::ScreenConTT="S";

@@ -41,7 +41,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/Constantes.o \
 	${OBJECTDIR}/JsonCreator.o \
 	${OBJECTDIR}/controlador.o \
+	${OBJECTDIR}/lista.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/nodo.o \
 	${OBJECTDIR}/servidor.o
 
 
@@ -99,10 +101,20 @@ ${OBJECTDIR}/controlador.o: controlador.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/controlador.o controlador.cpp
 
+${OBJECTDIR}/lista.o: lista.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/lista.o lista.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/nodo.o: nodo.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/nodo.o nodo.cpp
 
 ${OBJECTDIR}/servidor.o: servidor.cpp 
 	${MKDIR} -p ${OBJECTDIR}

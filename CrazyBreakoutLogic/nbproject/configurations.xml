@@ -10,6 +10,8 @@
       <itemPath>Constantes.h</itemPath>
       <itemPath>JsonCreator.h</itemPath>
       <itemPath>controlador.h</itemPath>
+      <itemPath>lista.h</itemPath>
+      <itemPath>nodo.h</itemPath>
       <itemPath>servidor.h</itemPath>
       <itemPath>structs.h</itemPath>
     </logicalFolder>
@@ -26,7 +28,9 @@
       <itemPath>Constantes.cpp</itemPath>
       <itemPath>JsonCreator.cpp</itemPath>
       <itemPath>controlador.cpp</itemPath>
+      <itemPath>lista.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>nodo.cpp</itemPath>
       <itemPath>servidor.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -80,7 +84,15 @@
       </item>
       <item path="controlador.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lista.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="lista.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nodo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nodo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="servidor.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -135,7 +147,15 @@
       </item>
       <item path="controlador.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="lista.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="lista.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nodo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="nodo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="servidor.cpp" ex="false" tool="1" flavor2="0">
       </item>

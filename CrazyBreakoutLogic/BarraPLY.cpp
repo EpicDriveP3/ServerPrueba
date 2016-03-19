@@ -70,8 +70,10 @@ int BarraPLY::resize(int pOP) {
  * positivo o negativo de hacia donde moverse.
  */
 void BarraPLY::move(string pX) {
-    if (pX==RightMove)
-        _PosX+=pixlMovBrr;
-    else if (pX==LeftMove)
-        _PosX-=pixlMovBrr;
+    if(_PosX>cero && (_PosX+BarraLengXSector3)<ScreenX){
+        if (pX==RightMove)
+            _PosX+=pixlMovBrr;
+        else if (pX==LeftMove)
+            _PosX-=pixlMovBrr;
+    }
 }
