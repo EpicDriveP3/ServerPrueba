@@ -29,6 +29,14 @@ servidor::servidor(int port) {
 }
 
 servidor::~servidor() {
+    pthread_mutex_lock(&_lock);
+    _killSystem=true;
+    pthread_mutex_unlock(&_lock);
+    close(_sockfd);
+    nodo* temp=_Screens->getHead();
+    for(int i=0; i<_Screens->getSize();i++){
+        close(temp->getData());
+    }
 }
 
 /**
@@ -68,10 +76,10 @@ void* servidor::ServerLoop() {
             //bloque para crear datos para el cliente
             ThreadClienteData temp;
             temp.data=this;
-            temp.playr=_Tplayrs;
+            temp.playr=_Tplayrs-uno;
             temp.sockFd=_newsockfd;
             //creacion del hilo para el cliente.
-            if(pthread_create(&_hiloCliente[_Tplayrs],NULL,
+            if(pthread_create(&_hiloCliente[_Tplayrs-uno],NULL,
                     &servidor::ClienteLoopHelper,&temp)!=cero)
                 error(error4);
             bandera=false;
@@ -105,7 +113,7 @@ void servidor::error(const char* msg) {
 void servidor::ClasiFFClient(int pSockFd, bool * pBandera) {
     void* almacenador= malloc(LengMSG);
     bzero(almacenador, LengMSG);
-    _n = read(pSockFd,almacenador,LengMSG);
+    _n = recv(pSockFd,almacenador,LengMSG,0);
     if (_n < cero)
         error(error6);
     char* msg= (char*)almacenador;
@@ -133,7 +141,7 @@ void* servidor::gettDatas(int pPlyr, int newsockfd) {
     while(true){
         while(!getBoolPlyrs(pPlyr)){
             bzero(almacenador, LengMSG);
-            _n = read(newsockfd,almacenador,LengMSG);
+            _n = recv(newsockfd,almacenador,LengMSG,0);
             if (_n < cero)
                 error(error6);
             pthread_mutex_lock(&_lock);
@@ -156,7 +164,7 @@ void servidor::sendMSG(const char* msg, int lenght) {
     nodo* temp=_Screens->getHead();
     if(debug)cout<<_Screens->getSize()<<endl;
     for(int i =0; i<_Screens->getSize(); i++){
-        _n=write(temp->getData(), msg, lenght);
+        _n=send(temp->getData(), msg, lenght,0);
         if (_n < cero) 
             error(error5);
         if(debug)
@@ -223,4 +231,15 @@ int servidor::getScreens() {
     int var=_Screens->getSize();;
     pthread_mutex_unlock(&_lock);
     return var;
+}
+
+/**
+ * metodo para retornar el estado del servidor.
+ * @return 
+ */
+bool servidor::getServerState() {
+    pthread_mutex_lock(&_lock);
+    bool temp=_killSystem;
+    pthread_mutex_unlock(&_lock);
+    return temp;
 }

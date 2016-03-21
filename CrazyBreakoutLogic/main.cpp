@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
             server->sendMSG("hola_mundo",10);
     }
     cin.ignore();*/
-    controlador * pruebaControlador = new controlador(5000);
+    controlador * pruebaControlador = new controlador(5001);
     
     /*prueba de coliciones
     Bola * pBola= new Bola(180,150);

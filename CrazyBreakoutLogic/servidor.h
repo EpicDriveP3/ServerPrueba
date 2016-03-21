@@ -59,10 +59,12 @@ private:
     //la imagen.
     lista * _Screens;
     int _Tplayrs;
+    bool _killSystem;
     void* ServerLoop(void);
     void* gettDatas(int plyr, int newsockfd);
     void ClasiFFClient(int SockFd, bool* bandera);
     void error(const char* msg);
+    bool getServerState();
     /**
      * metodo estatico que permite acceder al metodo que incializa el
      * ciclo que arranca el listener del server.

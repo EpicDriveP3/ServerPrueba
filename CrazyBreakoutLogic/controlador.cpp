@@ -16,7 +16,7 @@ controlador::controlador(int Pport) {
     _pelota[cero]= new Bola(ScreenX/dos-BallSize,PosYPLY-(BallSize+cinco));
     _BallsLeft++;
     /*--bloque para establecer el movimiento de la pelota sobre el campo---*/
-    _dirrection=(rand()%tres);
+    _dirrection=(rand()%tres)+uno;
     if(_dirrection==uno)
         _MoveBallX=-uno;
     else if(_dirrection==dos)
@@ -84,14 +84,7 @@ void controlador::MainLoop(){
             _servidor->sendMSG(msg.c_str(),msg.length());
             //mandar a dormir al hilo principal para que pueda tener 
             //tiempo la gui de procesar todo.
-            struct timespec tim, tim2;
-            tim.tv_nsec=0;
-            tim2.tv_nsec=500000000L;
-            if(nanosleep(&tim,&tim2)<cero){
-                cout<<"nanosleep fail"<<endl;
-                return;
-            }
-                
+            sleep(sleepTime);
         }   
     }
 }
@@ -159,7 +152,7 @@ void controlador::checkCollPly(int plyr, int * x, int * y, bool *bandera) {
             _pelota[cero]->getPx()>=(_ply[plyr]->getPosX()+BarraLengXSector1) &&
             _pelota[cero]->getPx()<=(_ply[plyr]->getPosX()+BarraLengXSector2)){
         (*x)=cero;
-        (*y)=cero;
+        (*y)=-uno;
         (*bandera)=true;
     }
     //colision con sector uno de la barra

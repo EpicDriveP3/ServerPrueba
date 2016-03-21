@@ -36,7 +36,7 @@ public:
     /*largo de la paleta del jugador en Y*/
     static const int PlayrLengY=20;
     /*pos inicial de la paleta en X*/
-    static const int initPosXPLY=(ScreenX/2)-(PlayrLengt/2);
+    static const int initPosXPLY=(ScreenX/2)-(PlayrLenght/2);
     /*posicion fija en Y*/
     static const int PosYPLY=ScreenY-(PlayrLengY+100);
     /*constante para disminuir el tamaño de la barra*/

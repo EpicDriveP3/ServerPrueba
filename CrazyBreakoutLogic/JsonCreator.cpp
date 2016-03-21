@@ -60,7 +60,7 @@ string JsonCreator::create(Bola* bola[], BarraPLY* plyrs[], BarraDes* barrs,
             temp=";Bl:"+to_string(pBarrs)+","+to_string(barrs->getHitLft());
             _mensaje.append(temp);
         }
-        _mensaje.append(";}");
+        _mensaje.append(";}\0");
     }
     return _mensaje;
 }
