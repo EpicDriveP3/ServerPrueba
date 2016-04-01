@@ -12,6 +12,7 @@
 #include "Nodo.h"
 #include "servidor.h"
 #include <string>
+#include <string.h>
 #include <fstream>
 
 class MemHandler :public Constantes {
@@ -26,6 +27,7 @@ private:
     void* _writerMemoryPointer;
     char* _diskLocation;
     int _MemoryLeft;
+    int _DiskLeft;
     int _DiskPointer;
     void PassToDisk();
 };

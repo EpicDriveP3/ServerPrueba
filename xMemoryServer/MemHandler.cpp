@@ -5,8 +5,6 @@
  * Created on March 22, 2016, 9:10 PM
  */
 
-#include <string.h>
-
 #include "MemHandler.h"
 
 /**
@@ -23,8 +21,16 @@ MemHandler::MemHandler(int port, char* DiskLocation) {
     _listaDatosAlmacenados= new lista();
 }
 
+/**
+ * destructor de la clase, se encarga de liberar toda la memoria 
+ * que estabamos usando.
+ */
 MemHandler::~MemHandler() {
-    
+    free(_chuckMemory);
+    _writerMemoryPointer=NULL;
+    delete []_diskLocation;
+    delete _listaDatosAlmacenados;
+    delete _servidor;
 }
 
 /**
@@ -35,17 +41,41 @@ MemHandler::~MemHandler() {
  * que se a pedido.
  */
 void MemHandler::LoopForService() {
+    //obtenemos el mensaje.
     char* IncommingMessage= _servidor->listenMsg();
+    //string para obtener el largo de caracteres de la cadena.
     string getMsgDatas= IncommingMessage;
-    if(getMsgDatas.length()>=_MemoryLeft){
-        //pasamos toda los datos a disco.
+    /*opcion por si ya no nos queda espacio en memoria, 
+     en ese caso pasamos todo a disco y verificamos que aun nos quede 
+     espacio en disco*/
+    if(getMsgDatas.length()>=_MemoryLeft && _DiskLeft<SPACE_MEMORY){
+        PassToDisk();
+    }
+    
+    /****************************************************************/
+    /*---------aqui hay que meterle la vara del rapidJson-----------*/
+    /*----------y encolar los datos a la lista como datos-----------*/
+    /*--------------------que estan en memoria----------------------*/
+    /****************************************************************/
+    
+    /*ciclo para escribir sobre la memoria, mientras esta aun le quede
+    espacio*/
+    for(int i=0; i<getMsgDatas.length(); i++,_MemoryLeft--){
+        //movemos el puntero
+        _writerMemoryPointer+=i;
+        //escribimos en la memoria.
+        *((char*)_writerMemoryPointer)=*(IncommingMessage+i);
     }
 }
 
+/**
+ * metodo para pasar todos los datos de la memoria al disco.
+ */
 void MemHandler::PassToDisk() {
     fstream diskWriter(_diskLocation);
     if(diskWriter.is_open()){
         Nodo* temp=_listaDatosAlmacenados->getHead();
+         void* PointerOfMemory;
         for(int i=0; i<_listaDatosAlmacenados->getSize(); i++){
             if(!temp->saveAtDisk()){
                 //movmevos el puntero del archivo a la ultima posicion
@@ -54,7 +84,7 @@ void MemHandler::PassToDisk() {
                 int space=temp->getSpaceSave();
                 int size=temp->getSizeSave();
                 //obtenemos el puntero de la memoria
-                void* PointerOfMemory=(_chuckMemory+space);
+                PointerOfMemory=(_chuckMemory+space);
                 //escribimos en disco
                 diskWriter.write((char*)PointerOfMemory,size);
                 //alteramos los datos internos del nodo.
@@ -62,6 +92,7 @@ void MemHandler::PassToDisk() {
                 temp->setSpaceSave(_DiskPointer);
                 //movemos el puntero del disco
                 _DiskPointer+=size;
+                _DiskLeft-=size;
             }
             temp= temp->getNext();
         }
