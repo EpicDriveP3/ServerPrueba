@@ -14,6 +14,9 @@
 #include <string>
 #include <string.h>
 #include <fstream>
+#include "rapidjson/document.h"
+
+using namespace rapidjson;
 
 class MemHandler :public Constantes {
 public:
@@ -21,6 +24,7 @@ public:
     virtual ~MemHandler();
     void LoopForService();
 private:
+    Document _JsonDocument;
     servidor * _servidor;
     lista * _listaDatosAlmacenados;
     void* _chuckMemory;
@@ -30,6 +34,8 @@ private:
     int _DiskLeft;
     int _DiskPointer;
     void PassToDisk();
+    void writeOnMemory(const char* mensaje);
+    void readOnMemory(const char * mensaje);
 };
 
 #endif	/* MEMHANDLER_H */

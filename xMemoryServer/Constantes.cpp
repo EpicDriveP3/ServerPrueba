@@ -7,7 +7,7 @@
 
 #include "Constantes.h"
 
-const char* Constantes::DISK_LOCATION="";
+const char* Constantes::DISK_LOCATION="server_datas.txt";
 const char* Constantes::ERROR1="ERROR opening socket\0";
 const char* Constantes::ERROR2="ERROR on binding\0";
 const char* Constantes::ERROR3="ERROR on accept\0";

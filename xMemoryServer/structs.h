@@ -8,10 +8,16 @@
 #ifndef STRUCTS_H
 #define	STRUCTS_H
 
+/**
+ * estructura para definir los 
+ * datos del cliente cuando se usan 
+ * hilos.
+ */
 struct ThreadClienteData{
     int sockFd;
     void* data;
 };
+
 
 #endif	/* STRUCTS_H */
 

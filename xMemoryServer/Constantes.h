@@ -24,6 +24,8 @@ public:
     static const int DOSCIENTOS_CINCUENTA_Y_SEIS=256;
     static const int SPACE_MEMORY=128;
     static const char* DISK_LOCATION;
+    static const int WRITE=1;
+    static const int READ=0;
     /*-------errores por parte del server------*/
     static const char* ERROR1;
     static const char* ERROR2;

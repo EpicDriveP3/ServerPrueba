@@ -41,31 +41,112 @@ MemHandler::~MemHandler() {
  * que se a pedido.
  */
 void MemHandler::LoopForService() {
-    //obtenemos el mensaje.
-    char* IncommingMessage= _servidor->listenMsg();
+    //ciclo para esuchar los mensajes del cliente
+    while(true){
+        //obtenemos el mensaje.
+        char* IncommingMessage= _servidor->listenMsg();
+        _JsonDocument.Parse((const char*)IncommingMessage);
+        Value & operation = _JsonDocument["OP"];
+        int op= operation.GetInt();
+        //recreamos el nuevo mensaje
+        string temp= IncommingMessage;
+        string cutMsg= temp.substr(CERO,(temp.length()-DIEZ));
+        cutMsg.append("}\0");
+        //verificamos la operacion
+        if(op==WRITE)
+            writeOnMemory(cutMsg.c_str());
+        else if(op==READ)
+            readOnMemory(cutMsg.c_str());
+    }
+}
+
+/**
+ * metodo para leer los datos que se le soliciten,
+ * ya sea desde disco o memoria.
+ * @param mensaje recibe una dato tipo const char*, este es el Json 
+ * que contendra el Id del dato que se nos pide.
+ */
+void MemHandler::readOnMemory(const char* mensaje) {
+    //parseamos el documento
+    _JsonDocument.Parse(mensaje);
+    //obtenemos el id
+    Value & idFromJson= _JsonDocument["ID"];
+    int id= idFromJson.GetInt();
+    //buscamos el nodo.
+    Nodo* temp= _listaDatosAlmacenados->getHead();
+    for(int i=0; i<_listaDatosAlmacenados->getSize(); i++){
+        if(temp->getID()==id)
+            break;
+        temp= temp->getNext();
+    }
+    //verificamos que el nodo no sea nulo
+    if(temp==NULL){
+        _servidor->sendMsg("NULL\0",CUATRO);
+        return;
+    }
+    //verificamos que los datos esten en memoria.
+    else if(!temp->saveAtDisk()){
+        int space=temp->getSpaceSave();
+        int size= temp->getSizeSave();
+        char* dato[size+UNO];
+        void * SpaceOnMemory= (_chuckMemory+space);
+        for(int i=0; i<size; i++){
+            *(dato+i)=*((char*)SpaceOnMemory+i);
+        }
+        dato[size+UNO]='\0';
+        _servidor->sendMsg(dato,size+UNO);
+        delete [] dato;
+    }
+    //tomamos por hecho que los datos estan en disco
+    else{
+        int space=temp->getSpaceSave();
+        int size= temp->getSizeSave();
+        char* dato[size+UNO];
+        fstream readOnDisk(_diskLocation);
+        if(readOnDisk.is_open()){
+            readOnDisk.seekg(space);
+            readOnDisk.read(dato,size);
+        }
+        dato[size+UNO]='\0';
+        _servidor->sendMsg(dato,size+UNO);
+        delete [] dato;
+    }
+}
+
+/**
+ * metodo para escribir los datos que se le pasen, este es el 
+ * Json que se le pasa desde el cliente.
+ * @param mensaje recibe un dato tipo const char* que es el Json que
+ * se recibio desde el server.
+ */
+void MemHandler::writeOnMemory(const char* mensaje) {
+    _JsonDocument.Parse(mensaje);
     //string para obtener el largo de caracteres de la cadena.
-    string getMsgDatas= IncommingMessage;
+    //**no sirve para nada mas**
+    string getMsgDatas= mensaje;
+    //id del mensaje que nos esta entrando.
+    int idOfData;
+    //tamaño del mensaje que nos esta entrando
+    int sizeOfData=getMsgDatas.length();
+    //espacio en memoria donde se almacenara el dato
+    int spaceOfMemory=(SPACE_MEMORY-_MemoryLeft);
     /*opcion por si ya no nos queda espacio en memoria, 
      en ese caso pasamos todo a disco y verificamos que aun nos quede 
      espacio en disco*/
-    if(getMsgDatas.length()>=_MemoryLeft && _DiskLeft<SPACE_MEMORY){
+    if(sizeOfData>=_MemoryLeft && _DiskLeft<SPACE_MEMORY){
         PassToDisk();
     }
-    
-    /****************************************************************/
-    /*---------aqui hay que meterle la vara del rapidJson-----------*/
-    /*----------y encolar los datos a la lista como datos-----------*/
-    /*--------------------que estan en memoria----------------------*/
-    /****************************************************************/
-    
     /*ciclo para escribir sobre la memoria, mientras esta aun le quede
     espacio*/
-    for(int i=0; i<getMsgDatas.length(); i++,_MemoryLeft--){
+    for(int i=0; i<sizeOfData; i++,_MemoryLeft--){
         //movemos el puntero
         _writerMemoryPointer+=i;
         //escribimos en la memoria.
-        *((char*)_writerMemoryPointer)=*(IncommingMessage+i);
+        *((char*)_writerMemoryPointer)=*(mensaje+i);
     }
+    Value & IdFromJson= _JsonDocument["ID"];
+    idOfData=IdFromJson.GetInt();
+    _listaDatosAlmacenados->insert(idOfData,spaceOfMemory,sizeOfData);
 }
 
 /**

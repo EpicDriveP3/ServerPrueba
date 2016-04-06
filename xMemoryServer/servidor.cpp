@@ -5,8 +5,6 @@
  * Created on March 22, 2016, 1:52 PM
  */
 
-#include <string.h>
-
 #include "servidor.h"
 
 servidor::servidor(int port) {
