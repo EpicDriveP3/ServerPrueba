@@ -88,8 +88,7 @@ void* servidor::gettDatas(int pPlyr, int newsockfd) {
         cout<<(char*)almacenador<<endl;
         cout<<"ingrese un mensaje"<<endl;
         bzero(almacenador, 100);
-        string temp;
-        cin>>temp;
+        string temp="{ \"op\":1, \"id\":32, \"mimeType\": \".txt\",\"msg\":{brencwibievqooivnqipurenviebviqbviefbvibeqivuberivenrivnieurvneirun}}";
         strcpy((char*)almacenador,temp.c_str());
         _n = send(newsockfd,almacenador,99,0);
         if (_n < 0)
