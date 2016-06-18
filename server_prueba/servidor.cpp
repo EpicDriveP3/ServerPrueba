@@ -82,7 +82,7 @@ void* servidor::gettDatas(int pPlyr, int newsockfd) {
     void* almacenador= malloc(100);
     while(true){
         bzero(almacenador, 100);
-        _n = recv(newsockfd,almacenador,1,0);
+        _n = recv(newsockfd,almacenador,100,0);
         if (_n < 0)
             error("error de lectura en socket");
         cout<<(char*)almacenador<<endl;
@@ -91,7 +91,7 @@ void* servidor::gettDatas(int pPlyr, int newsockfd) {
         string temp;
         cin>>temp;
         strcpy((char*)almacenador,temp.c_str());
-        _n = send(newsockfd,almacenador,1,0);
+        _n = send(newsockfd,almacenador,100,0);
         if (_n < 0)
             error("error de escritura en socket");
     }
