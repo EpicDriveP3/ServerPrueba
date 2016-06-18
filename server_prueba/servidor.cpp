@@ -86,6 +86,14 @@ void* servidor::gettDatas(int pPlyr, int newsockfd) {
         if (_n < 0)
             error("error de lectura en socket");
         cout<<(char*)almacenador<<endl;
+        cout<<"ingrese un mensaje"<<endl;
+        bzero(almacenador, 100);
+        string temp;
+        cin>>temp;
+        strcpy((char*)almacenador,temp.c_str());
+        _n = send(newsockfd,almacenador,1,0);
+        if (_n < 0)
+            error("error de escritura en socket");
     }
     free(almacenador);
 }
